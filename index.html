@@ -1,0 +1,834 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BrainWave Quiz - ท้าทายสมอง</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Kanit', sans-serif;
+            background: #0a0a0f;
+            color: #fff;
+            overflow-x: hidden;
+        }
+        /* Animated gradient background */
+        
+        .bg-gradient {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #1e1432 0%, #0a0a0f 50%, #1a0f2e 100%);
+            z-index: 0;
+        }
+        
+        .bg-gradient::before {
+            content: '';
+            position: absolute;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at 20% 50%, rgba(138, 43, 226, 0.15) 0%, transparent 50%), radial-gradient(circle at 80% 80%, rgba(147, 51, 234, 0.15) 0%, transparent 50%), radial-gradient(circle at 40% 20%, rgba(168, 85, 247, 0.1) 0%, transparent 50%);
+            animation: bgMove 20s ease-in-out infinite;
+        }
+        
+        @keyframes bgMove {
+            0%,
+            100% {
+                transform: translate(0, 0);
+            }
+            50% {
+                transform: translate(-50px, -50px);
+            }
+        }
+        /* Floating particles */
+        
+        .particles {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            pointer-events: none;
+        }
+        
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: rgba(168, 85, 247, 0.6);
+            border-radius: 50%;
+            animation: float 15s infinite ease-in-out;
+        }
+        
+        .particle:nth-child(1) {
+            top: 20%;
+            left: 10%;
+            animation-delay: 0s;
+        }
+        
+        .particle:nth-child(2) {
+            top: 60%;
+            left: 85%;
+            animation-delay: 2s;
+        }
+        
+        .particle:nth-child(3) {
+            top: 40%;
+            left: 60%;
+            animation-delay: 4s;
+        }
+        
+        .particle:nth-child(4) {
+            top: 80%;
+            left: 30%;
+            animation-delay: 1s;
+        }
+        
+        .particle:nth-child(5) {
+            top: 15%;
+            left: 70%;
+            animation-delay: 3s;
+        }
+        
+        @keyframes float {
+            0%,
+            100% {
+                transform: translateY(0) scale(1);
+                opacity: 0.5;
+            }
+            50% {
+                transform: translateY(-80px) scale(1.2);
+                opacity: 1;
+            }
+        }
+        
+        .container {
+            position: relative;
+            z-index: 2;
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+        /* Header */
+        
+        header {
+            text-align: center;
+            margin-bottom: 50px;
+            padding: 20px;
+        }
+        
+        .logo {
+            display: inline-flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 30px;
+            padding: 15px 30px;
+            background: rgba(168, 85, 247, 0.1);
+            border-radius: 50px;
+            border: 1px solid rgba(168, 85, 247, 0.3);
+            backdrop-filter: blur(10px);
+        }
+        
+        .logo-icon {
+            font-size: 32px;
+            filter: drop-shadow(0 0 10px rgba(168, 85, 247, 0.5));
+        }
+        
+        .logo-text {
+            font-size: 24px;
+            font-weight: 600;
+            background: linear-gradient(135deg, #a855f7 0%, #d946ef 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: 1px;
+        }
+        
+        h1 {
+            font-size: 56px;
+            font-weight: 700;
+            line-height: 1.2;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, #fff 0%, #e9d5ff 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .subtitle {
+            font-size: 20px;
+            color: #c4b5fd;
+            font-weight: 300;
+        }
+        /* Feature cards - New asymmetric design */
+        
+        .features {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+        
+        .feature-card {
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.1) 0%, rgba(168, 85, 247, 0.05) 100%);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(168, 85, 247, 0.25);
+            border-radius: 25px;
+            padding: 35px;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.4s ease;
+        }
+        
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(168, 85, 247, 0.1) 0%, transparent 70%);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+        
+        .feature-card:hover::before {
+            opacity: 1;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            border-color: rgba(168, 85, 247, 0.5);
+            box-shadow: 0 15px 50px rgba(168, 85, 247, 0.3);
+        }
+        
+        .feature-card:first-child {
+            grid-column: 1 / 2;
+            background: linear-gradient(135deg, rgba(168, 85, 247, 0.15) 0%, rgba(139, 92, 246, 0.08) 100%);
+        }
+        
+        .feature-card:nth-child(2) {
+            grid-column: 2 / 3;
+            background: linear-gradient(135deg, rgba(147, 51, 234, 0.12) 0%, rgba(168, 85, 247, 0.06) 100%);
+        }
+        
+        .feature-card:nth-child(3) {
+            grid-column: 1 / -1;
+            background: linear-gradient(135deg, rgba(126, 34, 206, 0.12) 0%, rgba(147, 51, 234, 0.06) 100%);
+            display: flex;
+            align-items: center;
+            gap: 30px;
+            padding: 30px 40px;
+        }
+        
+        .feature-card:nth-child(3) .feature-content {
+            display: flex;
+            align-items: center;
+            gap: 25px;
+            width: 100%;
+        }
+        
+        .feature-card:nth-child(3) .feature-icon {
+            margin-bottom: 0;
+        }
+        
+        .feature-card:nth-child(3) .feature-text {
+            flex: 1;
+        }
+        
+        .feature-icon {
+            font-size: 48px;
+            margin-bottom: 20px;
+            display: inline-block;
+            filter: drop-shadow(0 4px 15px rgba(168, 85, 247, 0.4));
+            position: relative;
+            z-index: 1;
+        }
+        
+        .feature-card:nth-child(1) .feature-icon {
+            animation: bounce 3s ease-in-out infinite;
+        }
+        
+        .feature-card:nth-child(2) .feature-icon {
+            animation: rotate 4s linear infinite;
+        }
+        
+        .feature-card:nth-child(3) .feature-icon {
+            animation: glow 2s ease-in-out infinite;
+        }
+        
+        @keyframes bounce {
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+        
+        @keyframes rotate {
+            from {
+                transform: rotate(0deg);
+            }
+            to {
+                transform: rotate(360deg);
+            }
+        }
+        
+        @keyframes glow {
+            0%,
+            100% {
+                filter: drop-shadow(0 4px 15px rgba(168, 85, 247, 0.4));
+            }
+            50% {
+                filter: drop-shadow(0 4px 25px rgba(168, 85, 247, 0.8));
+            }
+        }
+        
+        .feature-title {
+            font-size: 22px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            color: #e9d5ff;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .feature-desc {
+            font-size: 15px;
+            color: #c4b5fd;
+            line-height: 1.7;
+            font-weight: 300;
+            position: relative;
+            z-index: 1;
+        }
+        /* Mobile: Stack all cards in single column */
+        
+        @media (max-width: 900px) {
+            .features {
+                grid-template-columns: 1fr;
+            }
+            .feature-card:first-child,
+            .feature-card:nth-child(2),
+            .feature-card:nth-child(3) {
+                grid-column: 1;
+            }
+            .feature-card:nth-child(3) {
+                flex-direction: column;
+                padding: 35px;
+                text-align: center;
+            }
+            .feature-card:nth-child(3) .feature-content {
+                flex-direction: column;
+                text-align: center;
+            }
+            .feature-card:nth-child(3) .feature-icon {
+                margin-bottom: 20px;
+            }
+        }
+        /* Game section */
+        
+        .game-wrapper {
+            background: rgba(30, 20, 50, 0.6);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(168, 85, 247, 0.3);
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            margin-bottom: 40px;
+        }
+        
+        .game-header {
+            background: linear-gradient(135deg, rgba(138, 43, 226, 0.3) 0%, rgba(147, 51, 234, 0.3) 100%);
+            padding: 25px 35px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(168, 85, 247, 0.3);
+        }
+        
+        .game-status {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .status-light {
+            width: 10px;
+            height: 10px;
+            background: #10b981;
+            border-radius: 50%;
+            box-shadow: 0 0 15px #10b981;
+            animation: pulse 2s ease-in-out infinite;
+        }
+        
+        @keyframes pulse {
+            0%,
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+            50% {
+                opacity: 0.6;
+                transform: scale(0.9);
+            }
+        }
+        
+        .status-text {
+            font-size: 16px;
+            font-weight: 500;
+            color: #e9d5ff;
+        }
+        
+        .fullscreen-btn {
+            background: linear-gradient(135deg, #a855f7 0%, #9333ea 100%);
+            color: white;
+            border: none;
+            padding: 12px 28px;
+            border-radius: 12px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+            font-family: 'Kanit', sans-serif;
+            box-shadow: 0 4px 15px rgba(168, 85, 247, 0.4);
+        }
+        
+        .fullscreen-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 25px rgba(168, 85, 247, 0.6);
+        }
+        
+        .fullscreen-btn:active {
+            transform: translateY(0);
+        }
+        
+        .game-container {
+            position: relative;
+            background: #0a0a0f;
+        }
+        
+        .game-frame {
+            width: 100%;
+            height: 650px;
+            border: none;
+            display: block;
+        }
+        /* Instructions */
+        
+        .instructions {
+            padding: 40px;
+            background: rgba(20, 15, 35, 0.4);
+        }
+        
+        .instructions h3 {
+            font-size: 28px;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #e9d5ff;
+        }
+        
+        .instructions-subtitle {
+            font-size: 16px;
+            color: #a78bfa;
+            margin-bottom: 30px;
+            font-weight: 300;
+        }
+        
+        .steps {
+            display: grid;
+            gap: 15px;
+        }
+        
+        .step {
+            display: flex;
+            gap: 20px;
+            align-items: start;
+            padding: 20px;
+            background: rgba(168, 85, 247, 0.05);
+            border-radius: 15px;
+            border-left: 3px solid #a855f7;
+            transition: all 0.3s ease;
+        }
+        
+        .step:hover {
+            background: rgba(168, 85, 247, 0.1);
+            transform: translateX(5px);
+        }
+        
+        .step-num {
+            flex-shrink: 0;
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #a855f7 0%, #9333ea 100%);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 18px;
+            box-shadow: 0 4px 15px rgba(168, 85, 247, 0.4);
+        }
+        
+        .step-content h4 {
+            font-size: 17px;
+            font-weight: 600;
+            margin-bottom: 5px;
+            color: #e9d5ff;
+        }
+        
+        .step-content p {
+            font-size: 14px;
+            color: #a78bfa;
+            line-height: 1.6;
+            font-weight: 300;
+        }
+        /* Footer */
+        
+        footer {
+            text-align: center;
+            padding: 50px 20px;
+            background: rgba(30, 20, 50, 0.5);
+            backdrop-filter: blur(10px);
+            border-top: 1px solid rgba(168, 85, 247, 0.2);
+            margin-top: 40px;
+        }
+        
+        footer p {
+            color: #c4b5fd;
+            font-size: 15px;
+            font-weight: 400;
+        }
+        
+        footer strong {
+            color: #e9d5ff;
+            font-weight: 600;
+            background: linear-gradient(135deg, #a855f7 0%, #d946ef 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        /* Fullscreen styles */
+        
+        .game-wrapper:fullscreen {
+            border-radius: 0;
+        }
+        
+        .game-wrapper:fullscreen .game-frame {
+            height: calc(100vh - 90px);
+        }
+        
+        .game-wrapper:fullscreen .instructions {
+            display: none;
+        }
+        
+        .game-wrapper:-webkit-full-screen {
+            border-radius: 0;
+        }
+        
+        .game-wrapper:-webkit-full-screen .game-frame {
+            height: calc(100vh - 90px);
+        }
+        
+        .game-wrapper:-webkit-full-screen .instructions {
+            display: none;
+        }
+        /* Responsive */
+        
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 36px;
+            }
+            .subtitle {
+                font-size: 16px;
+            }
+            .game-frame {
+                height: 500px;
+            }
+            .game-header {
+                flex-direction: column;
+                gap: 15px;
+                align-items: stretch;
+            }
+            .fullscreen-btn {
+                width: 100%;
+                justify-content: center;
+                font-size: 16px;
+                padding: 14px 28px;
+            }
+            .step {
+                flex-direction: column;
+                gap: 15px;
+            }
+            /* Mobile fullscreen fix */
+            body.fullscreen-mode {
+                overflow: hidden;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="bg-gradient"></div>
+
+    <div class="particles">
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+    </div>
+
+    <div class="container">
+        <header>
+            <div class="logo">
+                <span class="logo-icon">🧠</span>
+                <span class="logo-text">BrainWave</span>
+            </div>
+            <h1>ท้าทายสมองด้วย<br>30 คำถามมันส์ๆ</h1>
+            <p class="subtitle">ทดสอบความรู้ และค้นพบตัวตนที่แท้จริงของคุณ</p>
+        </header>
+
+        <div class="features">
+            <div class="feature-card">
+                <span class="feature-icon">⚡</span>
+                <div class="feature-text">
+                    <h3 class="feature-title">เล่นง่าย เข้าใจไว</h3>
+                    <p class="feature-desc">ตอบคำถาม 30 ข้อ ใช้เวลาแค่ 5-10 นาที ไม่ซับซ้อน</p>
+                </div>
+            </div>
+            <div class="feature-card">
+                <span class="feature-icon">🎯</span>
+                <div class="feature-text">
+                    <h3 class="feature-title">วิเคราะห์ส่วนตัว</h3>
+                    <p class="feature-desc">ผลลัพธ์ที่ออกมาจะเป็นเฉพาะของคุณคนเดียว</p>
+                </div>
+            </div>
+            <div class="feature-card">
+                <div class="feature-content">
+                    <span class="feature-icon">💡</span>
+                    <div class="feature-text">
+                        <h3 class="feature-title">รู้จักตัวเองดีขึ้น</h3>
+                        <p class="feature-desc">ค้นพบมุมมองและบุคลิกที่คุณอาจยังไม่เคยรู้ ทดสอบความรู้และวิเคราะห์ตัวตนไปพร้อมกัน</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="game-wrapper" id="gameWrapper">
+            <div class="game-header">
+                <div class="game-status">
+                    <span class="status-light"></span>
+                    <span class="status-text">พร้อมเล่นแล้ว</span>
+                </div>
+                <button class="fullscreen-btn" id="fullscreenBtn" onclick="toggleFullscreen()">
+                    <span>⛶</span> เต็มจอ
+                </button>
+            </div>
+
+            <div class="game-container">
+                <iframe id="gameFrame" class="game-frame" src="game/"></iframe>
+            </div>
+
+            <div class="instructions">
+                <h3>วิธีเล่น</h3>
+                <p class="instructions-subtitle">ทำตามขั้นตอนง่ายๆ เพื่อรับผลการวิเคราะห์</p>
+
+                <div class="steps">
+                    <div class="step">
+                        <div class="step-num">1</div>
+                        <div class="step-content">
+                            <h4>เริ่มเกม</h4>
+                            <p>กดปุ่ม Start → เลือกระดับความยาก → เริ่มตอบคำถาม</p>
+                        </div>
+                    </div>
+
+                    <div class="step">
+                        <div class="step-num">2</div>
+                        <div class="step-content">
+                            <h4>ตอบคำถาม 30 ข้อ</h4>
+                            <p>เลือกคำตอบที่ตรงกับความคิดของคุณมากที่สุด ไม่ต้องคิดมาก</p>
+                        </div>
+                    </div>
+
+                    <div class="step">
+                        <div class="step-num">3</div>
+                        <div class="step-content">
+                            <h4>ดูผลการวิเคราะห์</h4>
+                            <p>เมื่อทำครบ 30 ข้อ ระบบจะแสดงผลการวิเคราะห์บุคลิกของคุณทันที</p>
+                        </div>
+                    </div>
+
+                    <div class="step">
+                        <div class="step-num">4</div>
+                        <div class="step-content">
+                            <h4>เล่นซ้ำได้ไม่จำกัด</h4>
+                            <p>ลองเล่นหลายครั้ง ดูว่าคำตอบเปลี่ยนไปหรือไม่</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>พัฒนาโดย <strong>Chanapol & Natdasit</strong> • Made with Flutter & HTML x CSS</p>
+    </footer>
+
+    <script>
+        function toggleFullscreen() {
+            const gameWrapper = document.getElementById('gameWrapper');
+            const gameFrame = document.getElementById('gameFrame');
+            const fullscreenBtn = document.getElementById('fullscreenBtn');
+
+            // ตรวจสอบว่าอยู่ในโหมดเต็มจออยู่แล้วหรือไม่
+            if (!document.fullscreenElement && !document.webkitFullscreenElement && !document.mozFullScreenElement) {
+                // เข้าสู่โหมดเต็มจอ
+                const element = gameWrapper;
+
+                if (element.requestFullscreen) {
+                    element.requestFullscreen().catch(err => {
+                        console.log('Fullscreen error:', err);
+                        // ถ้า fullscreen ไม่ได้ ให้ขยายเกมแทน
+                        expandGame();
+                    });
+                } else if (element.webkitRequestFullscreen) {
+                    element.webkitRequestFullscreen();
+                } else if (element.webkitEnterFullscreen) {
+                    // สำหรับ iOS Safari
+                    element.webkitEnterFullscreen();
+                } else if (element.mozRequestFullScreen) {
+                    element.mozRequestFullScreen();
+                } else if (element.msRequestFullscreen) {
+                    element.msRequestFullscreen();
+                } else {
+                    // ถ้าไม่รองรับ fullscreen API ให้ขยายเกมแทน
+                    expandGame();
+                }
+            } else {
+                // ออกจากโหมดเต็มจอ
+                if (document.exitFullscreen) {
+                    document.exitFullscreen();
+                } else if (document.webkitExitFullscreen) {
+                    document.webkitExitFullscreen();
+                } else if (document.mozCancelFullScreen) {
+                    document.mozCancelFullScreen();
+                } else if (document.msExitFullscreen) {
+                    document.msExitFullscreen();
+                } else {
+                    collapseGame();
+                }
+            }
+        }
+
+        // ฟังก์ชันสำรองสำหรับอุปกรณ์ที่ไม่รองรับ fullscreen API
+        let isExpanded = false;
+
+        function expandGame() {
+            const gameWrapper = document.getElementById('gameWrapper');
+            const gameFrame = document.getElementById('gameFrame');
+            const fullscreenBtn = document.getElementById('fullscreenBtn');
+            const container = document.querySelector('.container');
+
+            if (!isExpanded) {
+                // ซ่อนส่วนอื่นๆ
+                document.querySelector('header').style.display = 'none';
+                document.querySelector('.features').style.display = 'none';
+                document.querySelector('.instructions').style.display = 'none';
+                document.querySelector('footer').style.display = 'none';
+
+                // ขยายเกม
+                gameWrapper.style.position = 'fixed';
+                gameWrapper.style.top = '0';
+                gameWrapper.style.left = '0';
+                gameWrapper.style.width = '100%';
+                gameWrapper.style.height = '100%';
+                gameWrapper.style.zIndex = '9999';
+                gameWrapper.style.borderRadius = '0';
+                gameFrame.style.height = 'calc(100vh - 80px)';
+                container.style.padding = '0';
+                container.style.maxWidth = '100%';
+
+                fullscreenBtn.innerHTML = '<span>✕</span> ออก';
+                isExpanded = true;
+            }
+        }
+
+        function collapseGame() {
+            const gameWrapper = document.getElementById('gameWrapper');
+            const gameFrame = document.getElementById('gameFrame');
+            const fullscreenBtn = document.getElementById('fullscreenBtn');
+            const container = document.querySelector('.container');
+
+            if (isExpanded) {
+                // แสดงส่วนอื่นๆ กลับมา
+                document.querySelector('header').style.display = 'block';
+                document.querySelector('.features').style.display = 'grid';
+                document.querySelector('.instructions').style.display = 'block';
+                document.querySelector('footer').style.display = 'block';
+
+                // คืนค่าเกมเป็นปกติ
+                gameWrapper.style.position = 'relative';
+                gameWrapper.style.top = 'auto';
+                gameWrapper.style.left = 'auto';
+                gameWrapper.style.width = 'auto';
+                gameWrapper.style.height = 'auto';
+                gameWrapper.style.zIndex = 'auto';
+                gameWrapper.style.borderRadius = '24px';
+                gameFrame.style.height = '650px';
+                container.style.padding = '40px 20px';
+                container.style.maxWidth = '1100px';
+
+                fullscreenBtn.innerHTML = '<span>⛶</span> เต็มจอ';
+                isExpanded = false;
+            }
+        }
+
+        document.addEventListener('fullscreenchange', updateFullscreenButton);
+        document.addEventListener('webkitfullscreenchange', updateFullscreenButton);
+        document.addEventListener('mozfullscreenchange', updateFullscreenButton);
+        document.addEventListener('MSFullscreenChange', updateFullscreenButton);
+
+        function updateFullscreenButton() {
+            const fullscreenBtn = document.getElementById('fullscreenBtn');
+            if (document.fullscreenElement || document.webkitFullscreenElement) {
+                fullscreenBtn.innerHTML = '<span>✕</span> ออก';
+            } else {
+                fullscreenBtn.innerHTML = '<span>⛶</span> เต็มจอ';
+                if (isExpanded) {
+                    collapseGame();
+                }
+            }
+        }
+
+        // ตรวจจับการกด ESC เพื่อออกจากโหมดขยาย
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && isExpanded) {
+                collapseGame();
+            }
+        });
+
+        // ตรวจสอบว่าเป็นมือถือหรือไม่
+        function isMobile() {
+            return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+        }
+
+        // แสดงข้อความแจ้งเตือนสำหรับมือถือ
+        if (isMobile()) {
+            console.log('Mobile device detected - using fallback fullscreen mode');
+        }
+    </script>
+</body>
+
+</html>
